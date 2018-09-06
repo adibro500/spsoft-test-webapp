@@ -1,0 +1,92 @@
+<ng-container *ngFor="let person of persons;let idx=index">
+  <ng-container *ngIf="person !== undefined && person !== null && person !== ''">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <!-- [ngStyle]="{'background-image': 'url(' + person.img_url + ')'}" -->
+        <div mat-card-avatar class="example-header-image">
+          <img height="47" width="47" style="border-radius:50%" [src]='person.img_url' (error)="updateUrl($event,idx)">
+        </div>
+        <br/> &nbsp;
+        <mat-card-title><strong>Name: {{person.name}} </strong></mat-card-title>
+        &nbsp;
+        <mat-card-subtitle><strong>Description: {{person.desc}} </strong></mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button (click)="openModal(template)" mat-button>Edit</button>
+        <button (click)="openModal(deleteTemplate)" mat-button>Delete</button>
+      </mat-card-actions>
+    </mat-card>
+    <br/>
+
+    <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Enter person details</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <mat-form-field>
+          <input matInput [(ngModel)]="person.name" placeholder="What's your name?">
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <input matInput [(ngModel)]="person.desc" placeholder="What's your description?">
+        </mat-form-field>
+        <br/>
+        <!-- <mat-form-field>
+                  <input matInput [(ngModel)]="person.img_url" placeholder="What's your image url?">
+                </mat-form-field> -->
+        <input id="upload" class="file-upload__input" type="file" accept="image/*" name="file-upload" (change)="onProfileImageChange($event)">
+
+        <br/>
+
+        <br/>
+        <button mat-raised-button (click)="editPerson(idx);modalRef.hide()">Add a person</button>
+
+
+      </div>
+    </ng-template>
+
+    <ng-template #deleteTemplate>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Are you sure you want to delete?</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <button mat-raised-button (click)="deletePerson(idx);modalRef.hide()">Yes</button>
+        <button mat-raised-button (click)="modalRef.hide()">No</button>
+      </div>
+    </ng-template>
+
+
+
+  </ng-container>
+</ng-container>
+
+
+<ng-template #validImage>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Only .png, .jpeg and .jpg images are allowed</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <button mat-raised-button (click)="modalRef.hide()">Ok</button>
+    </div>
+  </ng-template>
+  <!-- Copyright 2018 Google Inc. All Rights Reserved.
+      Use of this source code is governed by an MIT-style license that
+      can be found in the LICENSE file at http://angular.io/license -->
+  <button style="display:none" id="btnClk" (click)='modalRef.hide();this.openModal(validImage)'>
+
+
